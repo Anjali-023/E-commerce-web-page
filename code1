@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple E-commerce App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .product-list {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .product {
+      text-align: center;
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 200px;
+    }
+    .product p {
+      margin: 0;
+      font-weight: bold;
+    }
+    .cart {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+.cart ul {
+      padding: 0;
+      list-style-type: none;
+    }
+    .cart li {
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cart .item-name {
+      flex: 1;
+    }
+    .cart .remove-button {
+      color: red;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Simple E-commerce App</h1>
+
+  <h2>Products</h2>
+  <div class="product-list">
+    <div class="product">
+      <p>Product 1 - $10</p>
+      <button onclick="addToCart('Product 1', 10)">Add to Cart</button>
+    </div>
+    <div class="product">
+      <p>Product 2 - $15</p>
+      <button onclick="addToCart('Product 2', 15)">Add to Cart</button>
+    </div>
+<div class="product">
+      <p>Product 3 - $20</p>
+      <button onclick="addToCart('Product 3', 20)">Add to Cart</button>
+    </div>
+  </div>
+
+  <h2>Cart</h2>
+  <div class="cart">
+    <ul id="cart-items">
+      <li id="cart-placeholder">Your cart is empty.</li>
+    </ul>
+  </div>
+
+  <script>
+    function addToCart(name, price) {
+      var cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+      var item = { name: name, price: price };
+      cartItems.push(item);
+      localStorage.setItem('cartItems', JSON.stringify(cartItems));
+      renderCart();
+    }
+
+    function removeFromCart(index) {
+      var cartItems = JSON.parse(localStorage.getItem('cartItems'));
+      cartItems.splice(index, 1);
+      localStorage.setItem('cartItems', JSON.stringify(cartItems));
+      renderCart();
+    }
+
+    function renderCart() {
+      var cartItems = JSON.parse(localStorage.getItem('cartItems'));
+      var cartElement = document.getElementById('cart-items');
+      cartElement.innerHTML = '';
+if (cartItems && cartItems.length > 0) {
+        for (var i = 0; i < cartItems.length; i++) {
+          var item = cartItems[i];
+          var listItem = document.createElement('li');
+          listItem.innerHTML = '<span class="item-name">' + item.name + ' - $' + item.price + '</span> <span class="remove-button" onclick="removeFromCart(' + i + ')">Remove</span>';
+          cartElement.appendChild(listItem);
+        }
+      } else {
+        var placeholderItem = document.createElement('li');
+        placeholderItem.innerText = 'Your cart is empty.';
+        placeholderItem.id = 'cart-placeholder';
+        cartElement.appendChild(placeholderItem);
+      }
+    }
+
+    renderCart();
+  </script>
+</body>
+</html>
